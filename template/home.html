@@ -15,6 +15,10 @@
       </header>
       <div class="messages-container" scroll-glue>
 
+        <div class="no-messages" ng-if="!vm.messages.length">
+          Pas de messages
+        </div>
+
         <div class="message-container" ng-repeat="message in vm.messages">
           <div class="author">
 

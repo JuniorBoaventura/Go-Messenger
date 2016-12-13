@@ -181,6 +181,11 @@ body {
     overflow: auto;
     padding: 25px;
     padding-bottom: 15px; }
+    .chat-container .messages-container .no-messages {
+      font-style: 12px;
+      text-align: center;
+      font-weight: bold;
+      color: #34495e; }
     .chat-container .messages-container .message-container {
       margin-bottom: 10px;
       font-size: 12px; }
