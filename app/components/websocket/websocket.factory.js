@@ -10,6 +10,7 @@
     var ws = new WebSocket('ws://localhost:8080/ws');
 
     ws.onopen    = function() {
+      sendRequest({body: 'junior', type: 'connect'});
       console.log('Connection established!');
     };
 

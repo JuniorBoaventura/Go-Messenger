@@ -4,18 +4,22 @@ import (
   "golang.org/x/net/websocket"
   "fmt"
   "net/http"
+  "crypto/md5"
+  "encoding/hex"
 )
 
-var clients []ClientConn
+var clients = make(map[string]ClientConn)
 
 type Message struct {
     Name string
     Body string
+    Type string
 }
 
 type ClientConn struct {
 	websocket *websocket.Conn
-	clientIP  string
+	clientIP string
+  Username string
 }
 
 func (this Message) GetName() string  {
@@ -29,12 +33,12 @@ func handler(w http.ResponseWriter, r *http.Request) {
 func Echo(ws *websocket.Conn) {
 
   ip := ws.Request().RemoteAddr
-  fmt.Println("Client connected:", ip)
-  client := ClientConn{ws, ip}
+  clientId := MD5Hash(ip)
 
-  clients = append(clients, client)
+  fmt.Println("Client connected:", ip)
 
   for {
+
     var msg Message
 
     if err := websocket.JSON.Receive(ws, &msg); err != nil {
@@ -42,7 +46,19 @@ func Echo(ws *websocket.Conn) {
       return
     }
 
-    broadcastClients(msg)
+    if msg.Type == "connect" {
+      username := msg.Body
+
+      client := ClientConn{ws, ip, username}
+      clients[clientId] = client
+
+      res := Message{username, clientId, "connected"}
+      websocket.JSON.Send(ws, res)
+    }
+
+    if msg.Type == "message" {
+      broadcastClients(msg)
+    }
 
   }
 
@@ -52,6 +68,12 @@ func broadcastClients(message Message) {
   for _, client := range clients {
     websocket.JSON.Send(client.websocket, message)
   }
+}
+
+func MD5Hash(text string) string {
+    hasher := md5.New()
+    hasher.Write([]byte(text))
+    return hex.EncodeToString(hasher.Sum(nil))
 }
 
 func main() {
