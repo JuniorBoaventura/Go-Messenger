@@ -6,9 +6,11 @@ import (
   "net/http"
   "crypto/md5"
   "encoding/hex"
+  "encoding/json"
 )
 
-var clients = make(map[string]ClientConn)
+var clients = make(map[string]Client)
+
 
 type Message struct {
     Name string
@@ -16,14 +18,27 @@ type Message struct {
     Type string
 }
 
-type ClientConn struct {
-	websocket *websocket.Conn
-	clientIP string
-  Username string
+type User struct {
+  Id string  `json:"id"`
+  Username string `json:"username"`
 }
 
-func (this Message) GetName() string  {
-  return this.Name
+type Client struct {
+	Websocket *websocket.Conn
+  user User
+}
+
+type Users struct {
+  Type string
+  Users []User
+}
+
+func (this Client) broadcast(clients map[string]Client, message interface{})  {
+  for _, client := range clients {
+    if client.user.Id != this.user.Id {
+      websocket.JSON.Send(client.Websocket, message)
+    }
+  }
 }
 
 func handler(w http.ResponseWriter, r *http.Request) {
@@ -34,8 +49,8 @@ func Echo(ws *websocket.Conn) {
 
   ip := ws.Request().RemoteAddr
   clientId := MD5Hash(ip)
-
-  fmt.Println("Client connected:", ip)
+  var client Client
+  fmt.Println("Client connected:", clientId)
 
   for {
 
@@ -49,26 +64,39 @@ func Echo(ws *websocket.Conn) {
     if msg.Type == "connect" {
       username := msg.Body
 
-      client := ClientConn{ws, ip, username}
-      clients[clientId] = client
+      user := User{clientId, username}
+      client = Client{ws, user}
 
-      res := Message{username, clientId, "connected"}
-      websocket.JSON.Send(ws, res)
+
+
+      connection := Message{username, clientId, "connected"}
+      newUser := Message{username, clientId, "newUser"}
+
+      var connectedUsers []User
+
+      for _, client := range clients {
+        connectedUsers = append(connectedUsers, client.user)
+      }
+
+      users := Users{"ConnectedUsers", connectedUsers}
+      json, _ := json.Marshal(connectedUsers)
+      fmt.Println(string(json))
+
+      websocket.JSON.Send(ws, connection)
+      websocket.JSON.Send(ws, users)
+
+      client.broadcast(clients, newUser)
+      clients[clientId] = client
     }
 
     if msg.Type == "message" {
-      broadcastClients(msg)
+      client.broadcast(clients, msg)
     }
 
   }
 
 }
 
-func broadcastClients(message Message) {
-  for _, client := range clients {
-    websocket.JSON.Send(client.websocket, message)
-  }
-}
 
 func MD5Hash(text string) string {
     hasher := md5.New()
