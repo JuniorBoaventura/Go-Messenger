@@ -4,14 +4,18 @@ import (
   "golang.org/x/net/websocket"
   "fmt"
   "net/http"
-  "encoding/json"
 )
 
-var clients []websocket.Conn
+var clients []ClientConn
 
 type Message struct {
     Name string
     Body string
+}
+
+type ClientConn struct {
+	websocket *websocket.Conn
+	clientIP  string
 }
 
 func (this Message) GetName() string  {
@@ -23,25 +27,31 @@ func handler(w http.ResponseWriter, r *http.Request) {
 }
 
 func Echo(ws *websocket.Conn) {
-  
-  for {
-    var msg []byte
 
-    if err := websocket.Message.Receive(ws, &msg); err != nil {
+  ip := ws.Request().RemoteAddr
+  fmt.Println("Client connected:", ip)
+  client := ClientConn{ws, ip}
+
+  clients = append(clients, client)
+
+  for {
+    var msg Message
+
+    if err := websocket.JSON.Receive(ws, &msg); err != nil {
+      fmt.Println(err)
       return
     }
 
-    m := Message{"Alice", "Hello"}
-    b, err := json.Marshal(m)
+    broadcastClients(msg)
 
-    if (err == nil) {
-      fmt.Printf("hello")
-      websocket.Message.Send(ws, string(b))
-    }
-
-    fmt.Printf(string(msg))
   }
 
+}
+
+func broadcastClients(message Message) {
+  for _, client := range clients {
+    websocket.JSON.Send(client.websocket, message)
+  }
 }
 
 func main() {
