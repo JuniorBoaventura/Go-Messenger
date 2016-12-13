@@ -129,99 +129,111 @@ body {
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   overflow: hidden; }
-
-.chat-left, .chat-right {
-  display: inline-block;
-  height: 80vh;
-  position: relative; }
-
-.chat-left {
-  width: 450px;
-  background: #F1F4F6;
-  background: rgba(241, 244, 246, 0.9);
-  border-right: 1px solid #F5F5F5; }
-  .chat-left header {
-    border-bottom: 1px solid #EAEAEA; }
-    .chat-left header .channels-button, .chat-left header .settings-button {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      line-height: 50px;
-      color: #16a085;
-      cursor: pointer;
-      transition: color 0.3s; }
-      .chat-left header .channels-button:hover, .chat-left header .settings-button:hover {
-        color: #1abc9c; }
-    .chat-left header .channels-button {
-      left: 0;
-      padding-left: 10px; }
-    .chat-left header .settings-button {
-      right: 0;
-      padding-right: 10px; }
-
-.chat-right {
-  width: 350px;
-  background: white; }
-
-header {
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 50px;
-  line-height: 50px;
-  text-align: center;
-  font-weight: bold;
-  background: white; }
-
-.messages-container {
-  position: absolute;
-  top: 50px;
-  left: 0;
-  right: 0;
-  bottom: 100px;
-  overflow: auto;
-  padding: 25px;
-  padding-bottom: 15px; }
-  .messages-container .message-container {
-    margin: auto;
-    background: white;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 20px 20px 20px 0px;
-    font-size: 12px;
-    /* end 'enter' transition */ }
-    .messages-container .message-container.ng-enter {
-      /* transition on enter for .5s */
-      transition: .5s;
-      /* start with opacity 0 (invisible) */
-      opacity: 0; }
-    .messages-container .message-container.ng-enter-active {
-      /* end with opacity 1 (fade in) */
-      opacity: 1; }
-
-.send-container {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 100px;
-  background: #FAFAFA;
-  text-align: center;
-  border-top: 1px solid #E7E7E8; }
-  .send-container textarea {
-    width: 330px;
-    height: 60px;
-    margin-top: 20px;
-    resize: none;
-    outline: 0;
-    border-radius: 4px;
-    padding: 5px;
-    border-color: lightgray; }
-  .send-container .send-button-container {
+  .chat-container .chat-left, .chat-container .chat-right {
+    display: inline-block;
+    height: 80vh;
+    position: relative; }
+  .chat-container .chat-left {
+    width: 450px;
+    background: #F1F4F6;
+    background: rgba(241, 244, 246, 0.9);
+    border-right: 1px solid #F5F5F5; }
+    .chat-container .chat-left header {
+      border-bottom: 1px solid #EAEAEA; }
+      .chat-container .chat-left header .channels-button, .chat-container .chat-left header .settings-button {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        line-height: 50px;
+        color: #16a085;
+        cursor: pointer;
+        transition: color 0.3s; }
+        .chat-container .chat-left header .channels-button:hover, .chat-container .chat-left header .settings-button:hover {
+          color: #1abc9c; }
+      .chat-container .chat-left header .channels-button {
+        left: 0;
+        padding-left: 10px; }
+      .chat-container .chat-left header .settings-button {
+        right: 0;
+        padding-right: 10px; }
+  .chat-container .chat-right {
+    width: 350px;
+    background: white; }
+  .chat-container header {
     position: absolute;
     top: 0;
+    left: 0;
     right: 0;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    background: white; }
+  .chat-container .messages-container {
+    position: absolute;
+    top: 50px;
+    left: 0;
+    right: 0;
+    bottom: 100px;
+    overflow: auto;
+    padding: 25px;
+    padding-bottom: 15px; }
+    .chat-container .messages-container .message-container {
+      margin-bottom: 10px;
+      float: left;
+      font-size: 12px; }
+      .chat-container .messages-container .message-container .message {
+        background: white;
+        padding: 10px;
+        border-radius: 20px 20px 20px 0px; }
+  .chat-container .send-container {
+    position: absolute;
     bottom: 0;
-    width: 60px;
-    line-height: 100px; }
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: #FAFAFA;
+    text-align: center;
+    border-top: 1px solid #E7E7E8; }
+    .chat-container .send-container textarea {
+      width: 330px;
+      height: 60px;
+      margin-top: 20px;
+      resize: none;
+      outline: 0;
+      border-radius: 4px;
+      padding: 5px;
+      border-color: lightgray; }
+    .chat-container .send-container .send-button-container {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 60px;
+      line-height: 100px; }
+
+.username-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 400px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  overflow: hidden; }
+  .username-container header {
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    font-weight: bold;
+    background: white; }
+  .username-container input {
+    display: block;
+    width: 100%;
+    height: 50px;
+    background: rgba(241, 244, 246, 0.8);
+    outline: none;
+    box-shadow: none;
+    border: none;
+    padding: 10px; }

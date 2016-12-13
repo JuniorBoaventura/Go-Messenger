@@ -5,7 +5,9 @@
     .module('app')
     .factory('WebsocketFactory', WebsocketFactory);
 
-  function WebsocketFactory() {
+  WebsocketFactory.$inject = ['$rootScope'];
+
+  function WebsocketFactory($rootScope) {
     var onList = {};
     var ws = false;
 
@@ -46,11 +48,14 @@
     }
 
     function emit(name, data) {
-      data.Type = name;
-      sendRequest(data);
+      sendRequest({
+        body: data,
+        Type: name
+      });
     }
 
     var service = {
+      sendRequest: sendRequest,
       on: on,
       emit: emit,
     };

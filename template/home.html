@@ -1,9 +1,6 @@
-<!-- <div class="">
-  <input type="text" name="" value="" ng-model="vm.username">
-  <textarea ng-model="vm.message"></textarea>
-  <button type="button" name="button" ng-click="vm.sendMessage()">send</button>
-</div> -->
-<div class="chat-container">
+<!-- <div class="" ng-init="vm.init()"></div> -->
+
+<div class="chat-container" ng-if="vm.isLogged && !vm.inUpdate" class="fade">
     <div class="chat-left">
       <header>
         Général
@@ -18,7 +15,10 @@
       </header>
       <div class="messages-container" scroll-glue>
 
-        <div class="message-container fade" ng-repeat="message in vm.messages">
+        <div class="message-container" ng-repeat="message in vm.messages">
+          <div class="author">
+
+          </div>
           <div class="message">
             <span class="strong">{{message.Name}}</span> {{message.Body}}
           </div>
@@ -38,4 +38,12 @@
         Draw Something
       </header>
     </div>
+</div>
+
+<div class="username-container" ng-if="!vm.isLogged || vm.inUpdate">
+  <header>
+    Votre pseudo ?
+  </header>
+
+  <input type="text" placeholder="ex: John Doe" ng-model="vm.usernameInput" ng-keyup="vm.setUsername($event)">
 </div>

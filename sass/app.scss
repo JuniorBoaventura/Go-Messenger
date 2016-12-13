@@ -23,9 +23,15 @@ body {
   -o-filter: blur(25px);
   -ms-filter: blur(25px);
   filter: blur(25px);
+
+  // transition: 2s -webkit-filter linear;
 }
 
 $chat-width: 800px;
+$left-width: 450px;
+$right-width: 350px;
+$header-height: 50px;
+$footer-height: 100px;
 
 .chat-container {
   position: fixed;
@@ -41,133 +47,150 @@ $chat-width: 800px;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   overflow: hidden;
-}
 
-$left-width: 450px;
-$right-width: 350px;
-$header-height: 50px;
-$footer-height: 100px;
+  .chat-left, .chat-right {
+    display: inline-block;
+    height: 80vh;
+    position: relative;
+  }
 
-.chat-left, .chat-right {
-  display: inline-block;
-  height: 80vh;
-  position: relative;
-}
+  .chat-left {
+    width: $left-width;
+    background: #F1F4F6;
+    background: rgba(241, 244, 246, 0.90);
+    border-right: 1px solid #F5F5F5;
 
-.chat-left {
-  width: $left-width;
-  background: #F1F4F6;
-  background: rgba(241, 244, 246, 0.90);
-  border-right: 1px solid #F5F5F5;
+    header {
+      border-bottom: 1px solid #EAEAEA;
 
-  header {
-    border-bottom: 1px solid #EAEAEA;
+      .channels-button, .settings-button {
+        position: absolute;
+        top: 0; bottom: 0;
+        line-height: $header-height;
+        color: #16a085;
+        cursor: pointer;
 
-    .channels-button, .settings-button {
-      position: absolute;
-      top: 0; bottom: 0;
-      line-height: $header-height;
-      color: #16a085;
-      cursor: pointer;
+        transition: color 0.3s;
 
-      transition: color 0.3s;
+        &:hover {
+          color: #1abc9c;
+        }
+      }
 
-      &:hover {
-        color: #1abc9c;
+      .channels-button {
+        left: 0;
+        padding-left: 10px;
+      }
+
+      .settings-button {
+        right: 0;
+        padding-right: 10px;
       }
     }
-
-    .channels-button {
-      left: 0;
-      padding-left: 10px;
-    }
-
-    .settings-button {
-      right: 0;
-      padding-right: 10px;
-    }
   }
-}
 
-.chat-right {
-  width: $right-width;
-  background: white;
-  // background: rgba(255, 255, 255, 0.80);
-}
-
-header {
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: $header-height;
-  line-height: $header-height;
-  text-align: center;
-  font-weight: bold;
-  background: white;
-}
-
-.messages-container {
-  position: absolute;
-  top: $header-height;
-  left: 0; right: 0;
-  bottom: $footer-height;
-  overflow: auto;
-  padding: 25px;
-  padding-bottom: 15px;
-
-  .message-container {
-    margin: auto;
+  .chat-right {
+    width: $right-width;
     background: white;
-    padding: 10px;
-    margin-bottom: 10px;
+    // background: rgba(255, 255, 255, 0.80);
+  }
 
-    border-radius: 20px 20px 20px 0px;
+  header {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: $header-height;
+    line-height: $header-height;
+    text-align: center;
+    font-weight: bold;
+    background: white;
+  }
 
-    font-size: 12px;
+  .messages-container {
+    position: absolute;
+    top: $header-height;
+    left: 0; right: 0;
+    bottom: $footer-height;
+    overflow: auto;
+    padding: 25px;
+    padding-bottom: 15px;
 
-    &.ng-enter {
-      /* transition on enter for .5s */
-      transition: .5s;
+    .message-container {
+      // margin: auto;
+      margin-bottom: 10px;
+      float: left;
+      font-size: 12px;
 
-      /* start with opacity 0 (invisible) */
-      opacity: 0;
+      .message {
+        background: white;
+        padding: 10px;
+        border-radius: 20px 20px 20px 0px;
+      }
+    }
+  }
+
+  .send-container {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    height: $footer-height;
+    background: #FAFAFA;
+    text-align: center;
+
+    border-top: 1px solid #E7E7E8;
+
+    $send-button-container-width: 60px;
+
+    textarea {
+      width: $left-width - (2 * $send-button-container-width);
+      height: $footer-height - (2 * 20);
+      margin-top: 20px;
+      resize: none;
+      outline: 0;
+      border-radius: 4px;
+      padding: 5px;
+
+      border-color: lightgray;
     }
 
-    /* end 'enter' transition */
-    &.ng-enter-active {
-      /* end with opacity 1 (fade in) */
-      opacity: 1;
+    .send-button-container {
+      position: absolute;
+      top: 0; right: 0; bottom: 0;
+      width: $send-button-container-width;
+      line-height: $footer-height;
     }
   }
 }
 
-.send-container {
-  position: absolute;
-  bottom: 0;
-  left: 0; right: 0;
-  height: $footer-height;
-  background: #FAFAFA;
-  text-align: center;
+.username-container {
+  position: fixed;
+  top: 50%;
+  left: 50%;
 
-  border-top: 1px solid #E7E7E8;
+  transform: translate(-50%, -50%);
 
-  $send-button-container-width: 60px;
+  width: 400px;
+  max-width: 90%;
 
-  textarea {
-    width: $left-width - (2 * $send-button-container-width);
-    height: $footer-height - (2 * 20);
-    margin-top: 20px;
-    resize: none;
-    outline: 0;
-    border-radius: 4px;
-    padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  overflow: hidden;
 
-    border-color: lightgray;
+  header {
+    height: $header-height;
+    line-height: $header-height;
+    text-align: center;
+    font-weight: bold;
+    background: white;
   }
 
-  .send-button-container {
-    position: absolute;
-    top: 0; right: 0; bottom: 0;
-    width: $send-button-container-width;
-    line-height: $footer-height;
+  input {
+    display: block;
+    width: 100%;
+    height: $header-height;
+    background: rgba(241, 244, 246, 0.80);
+    outline: none;
+    box-shadow: none;
+    border: none;
+    padding: 10px;
   }
 }
