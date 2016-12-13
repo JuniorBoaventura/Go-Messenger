@@ -18,7 +18,7 @@
       </header>
       <div class="messages-container" scroll-glue>
 
-        <div class="message-container" ng-repeat="message in vm.messages">
+        <div class="message-container fade" ng-repeat="message in vm.messages">
           <div class="message">
             <span class="strong">{{message.Name}}</span> {{message.Body}}
           </div>
@@ -26,9 +26,9 @@
 
       </div>
       <div class="send-container">
-        <textarea name="name" rows="8" cols="80"></textarea>
+        <textarea name="name" rows="8" cols="80" ng-model="vm.message"></textarea>
         <div class="send-button-container">
-          <button class="circular ui icon basic mini button">
+          <button class="circular ui icon basic mini button" ng-click="vm.sendMessage()">
             <i class="icon send"></i>
           </button>
         </div>

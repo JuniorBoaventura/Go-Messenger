@@ -126,7 +126,6 @@ body {
   width: 800px;
   max-width: 90%;
   height: 80vh;
-  background: white;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
   overflow: hidden; }
@@ -139,6 +138,7 @@ body {
 .chat-left {
   width: 450px;
   background: #F1F4F6;
+  background: rgba(241, 244, 246, 0.9);
   border-right: 1px solid #F5F5F5; }
   .chat-left header {
     border-bottom: 1px solid #EAEAEA; }
@@ -160,7 +160,8 @@ body {
       padding-right: 10px; }
 
 .chat-right {
-  width: 350px; }
+  width: 350px;
+  background: white; }
 
 header {
   position: absolute;
@@ -188,7 +189,16 @@ header {
     padding: 10px;
     margin-bottom: 10px;
     border-radius: 20px 20px 20px 0px;
-    font-size: 12px; }
+    font-size: 12px;
+    /* end 'enter' transition */ }
+    .messages-container .message-container.ng-enter {
+      /* transition on enter for .5s */
+      transition: .5s;
+      /* start with opacity 0 (invisible) */
+      opacity: 0; }
+    .messages-container .message-container.ng-enter-active {
+      /* end with opacity 1 (fade in) */
+      opacity: 1; }
 
 .send-container {
   position: absolute;

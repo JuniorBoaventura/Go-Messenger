@@ -22,82 +22,6 @@
         Name: 'Antoine D',
         Body: 'Hello World',
       },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
-      {
-        Name: 'Antoine D',
-        Body: 'Hello World',
-      },
     ];
 
     vm.sendMessage = sendMessage;
@@ -106,7 +30,8 @@
       if (vm.username.length && vm.message.length) {
         ws.sendRequest({
           Name: vm.username,
-          Body: vm.message
+          Body: vm.message,
+          Type: 'message',
         });
       }
     }

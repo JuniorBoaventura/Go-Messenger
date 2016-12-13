@@ -6,28 +6,56 @@
     .factory('WebsocketFactory', WebsocketFactory);
 
   function WebsocketFactory() {
+    var onList = {};
+    var ws = false;
 
-    var ws = new WebSocket('ws://localhost:8080/ws');
+    function init(username) {
+      ws = new WebSocket('ws://localhost:8080/ws');
 
-    ws.onopen    = function() {
-      sendRequest({body: 'junior', type: 'connect'});
-      console.log('Connection established!');
-    };
+      ws.onopen    = function() {
+        // sendRequest({body: username, type: 'connect'});
+        console.log('Connection established!');
+      };
 
-    ws.onmessage = function(res) {
-      let json = JSON.parse(res.data);
-      console.log(json);
-    };
+      ws.onmessage = function(res) {
+        var data = JSON.parse(res.data);
+
+        if (typeof onList[data.Type] == 'function') {
+          var callback = onList[data.Type];
+          delete data.Type;
+          callback(data);
+        } else {
+          console.warn('Unhandled socket message:', data);
+        }
+      };
+    }
+
+    init();
 
     function sendRequest(request) {
+      if (!ws) {
+        console.error('WebSocket is not available');
+        return;
+      }
+
       ws.send(JSON.stringify(request));
     };
 
-    var service = {
-      sendRequest: sendRequest
-    };
-    return service;
+    function on(name, callback) {
+      onList[name] = callback;
+    }
 
+    function emit(name, data) {
+      data.Type = name;
+      sendRequest(data);
+    }
+
+    var service = {
+      on: on,
+      emit: emit,
+    };
+
+    return service;
   }
 
 })();

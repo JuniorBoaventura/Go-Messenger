@@ -38,7 +38,6 @@ $chat-width: 800px;
   max-width: 90%;
   height: 80vh;
 
-  background: white;
   border-radius: 10px;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
   overflow: hidden;
@@ -58,6 +57,7 @@ $footer-height: 100px;
 .chat-left {
   width: $left-width;
   background: #F1F4F6;
+  background: rgba(241, 244, 246, 0.90);
   border-right: 1px solid #F5F5F5;
 
   header {
@@ -91,6 +91,8 @@ $footer-height: 100px;
 
 .chat-right {
   width: $right-width;
+  background: white;
+  // background: rgba(255, 255, 255, 0.80);
 }
 
 header {
@@ -121,6 +123,20 @@ header {
     border-radius: 20px 20px 20px 0px;
 
     font-size: 12px;
+
+    &.ng-enter {
+      /* transition on enter for .5s */
+      transition: .5s;
+
+      /* start with opacity 0 (invisible) */
+      opacity: 0;
+    }
+
+    /* end 'enter' transition */
+    &.ng-enter-active {
+      /* end with opacity 1 (fade in) */
+      opacity: 1;
+    }
   }
 }
 

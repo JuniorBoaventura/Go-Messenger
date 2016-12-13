@@ -2,6 +2,6 @@
   'use strict';
 
   angular
-      .module('app', ['ngRoute', 'luegg.directives']);
+      .module('app', ['ngRoute', 'luegg.directives', 'ngAnimate']);
 
 })();
