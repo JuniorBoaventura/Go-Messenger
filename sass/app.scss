@@ -115,15 +115,14 @@ $footer-height: 100px;
     padding-bottom: 15px;
 
     .message-container {
-      // margin: auto;
       margin-bottom: 10px;
-      float: left;
       font-size: 12px;
 
       .message {
         background: white;
         padding: 10px;
         border-radius: 20px 20px 20px 0px;
+        float: left;
       }
     }
   }

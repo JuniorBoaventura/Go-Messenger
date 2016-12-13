@@ -12,7 +12,7 @@
 
     vm.username    = '';
     vm.usernameInput = '';
-    vm.message     = 'Hello Michel';
+    vm.message     = '';
 
     vm.isLogged = false;
     vm.inUpdate = false;

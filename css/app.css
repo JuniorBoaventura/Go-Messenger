@@ -95,6 +95,9 @@ input, select {
 .justify {
   text-align: justify; }
 
+.clearfix {
+  clear: both; }
+
 body {
   min-height: 100vh; }
 
@@ -180,12 +183,12 @@ body {
     padding-bottom: 15px; }
     .chat-container .messages-container .message-container {
       margin-bottom: 10px;
-      float: left;
       font-size: 12px; }
       .chat-container .messages-container .message-container .message {
         background: white;
         padding: 10px;
-        border-radius: 20px 20px 20px 0px; }
+        border-radius: 20px 20px 20px 0px;
+        float: left; }
   .chat-container .send-container {
     position: absolute;
     bottom: 0;
