@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <meta charset="utf-8">
+    <title>Angular App</title>
+    <script type="text/javascript" src="./node_modules/angular/angular.min.js"></script>
+    <script type="text/javascript" src="./node_modules/angular-route/angular-route.min.js"></script>
+    <script type="text/javascript" src="./app/js/app.module.js"></script>
+    <script type="text/javascript" src="./app/js/app.routes.js"></script>
+    <script type="text/javascript" src="./app/components/home/home.controller.js"></script>
+    <script type="text/javascript" src="./app/components/websocket/websocket.factory.js"></script>
+    <link rel="stylesheet" href="./css/app.css" media="screen">
+  </head>
+  <body>
+    <div ng-view></div>
+  </body>
+</html>
