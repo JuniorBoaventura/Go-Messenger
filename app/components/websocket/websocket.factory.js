@@ -11,7 +11,6 @@
 
     ws.onopen    = function() {
       console.log('Connection established!');
-      ws.send({clientId: 124312, message: 'hello World'});
     };
 
     ws.onmessage = function(res) {
