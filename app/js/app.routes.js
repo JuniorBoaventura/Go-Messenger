@@ -1,13 +1,19 @@
 (function() {
   'use strict';
-  let templateDir = 'template/';
+
   angular
     .module('app')
-    .config(function($routeProvider) {
-      $routeProvider
-      .when('/', {
-        templateUrl: templateDir + 'home.html',
-        controller: 'HomeController'
-      });
+    .config(config);
+
+  config.$inject = ['$routeProvider'];
+
+  function config($routeProvider) {
+    let templateDir = 'template/';
+
+    $routeProvider.when('/', {
+      templateUrl: templateDir + 'home.html',
+      controller: 'HomeController',
+      controllerAs: 'vm',
     });
+  }
 })();

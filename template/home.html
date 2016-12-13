@@ -1,4 +1,5 @@
 <div class="" ng-controller="HomeController as ctrl">
-  <textarea></textarea>
-  <button type="button" name="button" ng-click="">send</button>
+  <input type="text" name="" value="" ng-model="vm.username">
+  <textarea ng-model="vm.message"></textarea>
+  <button type="button" name="button" ng-click="vm.sendMessage()">send</button>
 </div>
