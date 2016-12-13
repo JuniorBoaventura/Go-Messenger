@@ -98,6 +98,9 @@ input, select {
 body {
   min-height: 100vh; }
 
+.strong {
+  font-weight: bold; }
+
 .background-image {
   position: fixed;
   top: -50px;
@@ -135,7 +138,26 @@ body {
 
 .chat-left {
   width: 450px;
-  background: #F1F4F6; }
+  background: #F1F4F6;
+  border-right: 1px solid #F5F5F5; }
+  .chat-left header {
+    border-bottom: 1px solid #EAEAEA; }
+    .chat-left header .channels-button, .chat-left header .settings-button {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      line-height: 50px;
+      color: #16a085;
+      cursor: pointer;
+      transition: color 0.3s; }
+      .chat-left header .channels-button:hover, .chat-left header .settings-button:hover {
+        color: #1abc9c; }
+    .chat-left header .channels-button {
+      left: 0;
+      padding-left: 10px; }
+    .chat-left header .settings-button {
+      right: 0;
+      padding-right: 10px; }
 
 .chat-right {
   width: 350px; }
@@ -157,4 +179,39 @@ header {
   left: 0;
   right: 0;
   bottom: 100px;
-  background: blue; }
+  overflow: auto;
+  padding: 25px;
+  padding-bottom: 15px; }
+  .messages-container .message-container {
+    margin: auto;
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 20px 20px 20px 0px;
+    font-size: 12px; }
+
+.send-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100px;
+  background: #FAFAFA;
+  text-align: center;
+  border-top: 1px solid #E7E7E8; }
+  .send-container textarea {
+    width: 330px;
+    height: 60px;
+    margin-top: 20px;
+    resize: none;
+    outline: 0;
+    border-radius: 4px;
+    padding: 5px;
+    border-color: lightgray; }
+  .send-container .send-button-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 60px;
+    line-height: 100px; }

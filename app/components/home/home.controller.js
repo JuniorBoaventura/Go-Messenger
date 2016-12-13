@@ -13,6 +13,93 @@
     vm.username    = 'John';
     vm.message     = 'Hello Michel';
 
+    vm.messages = [
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+      {
+        Name: 'Antoine D',
+        Body: 'Hello World',
+      },
+    ];
+
     vm.sendMessage = sendMessage;
 
     function sendMessage() {

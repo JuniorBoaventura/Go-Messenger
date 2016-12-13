@@ -6,14 +6,36 @@
 <div class="chat-container">
     <div class="chat-left">
       <header>
-        Chat
-      </header>
-      <div class="messages-container">
+        Général
 
+        <div class="channels-button">
+          <i class="grid layout icon"></i>
+        </div>
+
+        <div class="settings-button">
+          <i class="ellipsis horizontal icon"></i>
+        </div>
+      </header>
+      <div class="messages-container" scroll-glue>
+
+        <div class="message-container" ng-repeat="message in vm.messages">
+          <div class="message">
+            <span class="strong">{{message.Name}}</span> {{message.Body}}
+          </div>
+        </div>
+
+      </div>
+      <div class="send-container">
+        <textarea name="name" rows="8" cols="80"></textarea>
+        <div class="send-button-container">
+          <button class="circular ui icon basic mini button">
+            <i class="icon send"></i>
+          </button>
+        </div>
       </div>
     </div><div class="chat-right">
       <header>
-        Hello
+        Draw Something
       </header>
     </div>
 </div>

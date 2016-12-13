@@ -5,6 +5,10 @@ body {
   min-height: 100vh;
 }
 
+.strong {
+  font-weight: bold;
+}
+
 .background-image {
   position: fixed;
   top: -50px; left: -50px; right: -50px; bottom: -50px;
@@ -40,6 +44,11 @@ $chat-width: 800px;
   overflow: hidden;
 }
 
+$left-width: 450px;
+$right-width: 350px;
+$header-height: 50px;
+$footer-height: 100px;
+
 .chat-left, .chat-right {
   display: inline-block;
   height: 80vh;
@@ -47,16 +56,42 @@ $chat-width: 800px;
 }
 
 .chat-left {
-  width: 450px;
+  width: $left-width;
   background: #F1F4F6;
+  border-right: 1px solid #F5F5F5;
+
+  header {
+    border-bottom: 1px solid #EAEAEA;
+
+    .channels-button, .settings-button {
+      position: absolute;
+      top: 0; bottom: 0;
+      line-height: $header-height;
+      color: #16a085;
+      cursor: pointer;
+
+      transition: color 0.3s;
+
+      &:hover {
+        color: #1abc9c;
+      }
+    }
+
+    .channels-button {
+      left: 0;
+      padding-left: 10px;
+    }
+
+    .settings-button {
+      right: 0;
+      padding-right: 10px;
+    }
+  }
 }
 
 .chat-right {
-  width: 350px;
+  width: $right-width;
 }
-
-$header-height: 50px;
-$footer-height: 100px;
 
 header {
   position: absolute;
@@ -73,5 +108,50 @@ header {
   top: $header-height;
   left: 0; right: 0;
   bottom: $footer-height;
-  background: blue;
+  overflow: auto;
+  padding: 25px;
+  padding-bottom: 15px;
+
+  .message-container {
+    margin: auto;
+    background: white;
+    padding: 10px;
+    margin-bottom: 10px;
+
+    border-radius: 20px 20px 20px 0px;
+
+    font-size: 12px;
+  }
+}
+
+.send-container {
+  position: absolute;
+  bottom: 0;
+  left: 0; right: 0;
+  height: $footer-height;
+  background: #FAFAFA;
+  text-align: center;
+
+  border-top: 1px solid #E7E7E8;
+
+  $send-button-container-width: 60px;
+
+  textarea {
+    width: $left-width - (2 * $send-button-container-width);
+    height: $footer-height - (2 * 20);
+    margin-top: 20px;
+    resize: none;
+    outline: 0;
+    border-radius: 4px;
+    padding: 5px;
+
+    border-color: lightgray;
+  }
+
+  .send-button-container {
+    position: absolute;
+    top: 0; right: 0; bottom: 0;
+    width: $send-button-container-width;
+    line-height: $footer-height;
+  }
 }
