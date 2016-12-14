@@ -36,7 +36,12 @@
       if (!data.Users) { return; }
 
       $scope.$apply(function() {
-        vm.users = data.Users;
+        angular.forEach(data.Users, function(user) {
+          vm.users.push({
+            id: user.Id,
+            username: user.Name,
+          });
+        });
       });
     });
 
@@ -50,14 +55,14 @@
       });
     });
 
-    ws.on('newUser', function(data) {
+    ws.on('newUser', function(data) { console.log('newUser');
       var user = {
         id: data.Body,
         username: data.Name,
       };
 
       $scope.$apply(function() {
-        console.log();
+        console.log('user', user);
         vm.users.push(user);
       });
     });

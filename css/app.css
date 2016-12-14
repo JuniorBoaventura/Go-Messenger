@@ -209,6 +209,7 @@ body {
         float: left; }
       .chat-container .messages-container .message-container .message.self {
         background: #1abc9c;
+        color: white;
         float: right; }
   .chat-container .send-container {
     position: absolute;
