@@ -21,10 +21,15 @@
 
     // Socket event
     ws.on('connected', function(data) {
+      console.log('connected', data);
       $scope.$apply(function() {
         vm.username = data.Name;
         vm.isLogged = true;
       });
+    });
+
+    ws.on('ConnectedUsers', function(data) {
+      console.log('users', data);
     });
 
     ws.on('message', function(data) {
@@ -39,6 +44,7 @@
 
     function sendMessage(e) {
       if (vm.username.length && vm.message.length) {
+        console.log('here');
         ws.sendRequest({
           Name: vm.username,
           Body: vm.message,
