@@ -17,13 +17,13 @@ type Message struct {
 }
 
 type User struct {
-  Id string  `json:"id"`
-  Name string `json:"username"`
+  Id string
+  Name string
 }
 
 type Client struct {
 	Websocket *websocket.Conn
-  user User
+  User User
 }
 
 type Users struct {
@@ -31,99 +31,98 @@ type Users struct {
   Users []User
 }
 
+// // Send an object to all the clients connected except the current user
 func (this User) broadcast(message interface{})  {
   for _, client := range clients {
-    if client.user.Id != this.Id {
+    if client.User.Id != this.Id {
       websocket.JSON.Send(client.Websocket, message)
     }
   }
 }
 
+// Send an object to all the clients connected
 func (this Client) emit(message interface{})  {
   for _, client := range clients {
     websocket.JSON.Send(client.Websocket, message)
   }
 }
 
+// Broadcast the deconnection of the user and remove it from clients
 func (this User) disconnect() {
   disconnected := Message {this.Name, this.Id, "disconnected"}
   this.broadcast(disconnected)
   delete(clients, this.Id)
 }
 
-func handler(w http.ResponseWriter, r *http.Request) {
-    fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
-}
-
+// Return the list of the users connected
 func (this Client) UsersConnected() []User {
   var connectedUsers []User
 
   for _, client := range clients {
-    if client.user.Id != this.user.Id {
-      connectedUsers = append(connectedUsers, client.user)
+    if client.User.Id != this.User.Id {
+      connectedUsers = append(connectedUsers, client.User)
     }
   }
 
   return connectedUsers
 }
 
-func Echo(ws *websocket.Conn) {
+func main() {
+  http.Handle("/ws", websocket.Handler(WebSocket))
+  http.ListenAndServe(":8080", nil)
+}
+
+func WebSocket(ws *websocket.Conn) {
 
   ip := ws.Request().RemoteAddr
-  clientId := MD5Hash(ip)
+  clientId := hashMD5(ip)
   var client Client
   var user User
   fmt.Println("Client connected:", clientId)
 
   for {
 
-    var msg Message
+    var data Message
 
-    if err := websocket.JSON.Receive(ws, &msg); err != nil {
+    if err := websocket.JSON.Receive(ws, &data); err != nil {
+      // If there is an error the user closed the connection
+      fmt.Println("Client disconnected:", clientId)
       user.disconnect()
       return
     }
 
-    if msg.Type == "connect" {
-      username := msg.Body
+    if data.Type == "connect" {
+
+      username := data.Body
 
       user = User{clientId, username}
       client = Client{ws, user}
 
-      connection := Message{username, clientId, "connected"}
-      newUser := Message{username, clientId, "newUser"}
-
-      users := Users{"ConnectedUsers", client.UsersConnected()}
-
       // User Receive is connection information
+      connection := Message{username, clientId, "connected"}
       websocket.JSON.Send(ws, connection)
 
       // User receive the list of the connected users
+      users := Users{"ConnectedUsers", client.UsersConnected()}
       websocket.JSON.Send(ws, users)
 
       // Prevent all the other clients of it's connection
+      newUser := Message{username, clientId, "newUser"}
       user.broadcast(newUser)
 
       clients[clientId] = client
     }
 
-    if msg.Type == "message" {
-      client.emit(msg)
+    if data.Type == "message" {
+      client.emit(data)
     }
 
   }
 
 }
 
-
-func MD5Hash(text string) string {
-    hasher := md5.New()
-    hasher.Write([]byte(text))
-    return hex.EncodeToString(hasher.Sum(nil))
-}
-
-func main() {
-    http.HandleFunc("/", handler)
-    http.Handle("/ws", websocket.Handler(Echo))
-    http.ListenAndServe(":8080", nil)
+func hashMD5(text string) string {
+  hasher := md5.New()
+  hasher.Write([]byte(text))
+  return hex.EncodeToString(hasher.Sum(nil))
 }
