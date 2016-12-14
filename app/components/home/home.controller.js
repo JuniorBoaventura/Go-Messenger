@@ -32,28 +32,64 @@
 
     ws.on('ConnectedUsers', function(data) {
       console.log('users', data);
+
+      if (!data.Users) { return; }
+
+      $scope.$apply(function() {
+        vm.users = data.Users;
+      });
+    });
+
+    ws.on('disconnected', function(data) {
+      $scope.$apply(function() {
+        angular.forEach(vm.users, function(value, key) {
+          if (value.id == data.Body) {
+            delete vm.users[key];
+          }
+        });
+      });
+    });
+
+    ws.on('newUser', function(data) {
+      var user = {
+        id: data.Body,
+        username: data.Name,
+      };
+
+      $scope.$apply(function() {
+        console.log();
+        vm.users.push(user);
+      });
     });
 
     ws.on('message', function(data) {
-      console.log('onmessage', data);
       $scope.$apply(function() {
+        var explode = data.Name.split(':');
+        data.id = explode[0];
+        data.Name = explode[1];
         vm.messages.push(data);
       });
     });
 
-    vm.sendMessage = sendMessage;
-    vm.setUsername = setUsername;
+    vm.sendMessage         = sendMessage;
+    vm.sendMessageKeyboard = sendMessageKeyboard;
+    vm.setUsername         = setUsername;
 
-    function sendMessage(e) {
+    function sendMessage() {
       if (vm.me.Name.length && vm.message.length) {
-        console.log('here');
         ws.sendRequest({
-          Name: vm.me.Name,
+          Name: vm.me.Body + ':' + vm.me.Name,
           Body: vm.message,
           Type: 'message',
         });
 
         vm.message = '';
+      }
+    }
+
+    function sendMessageKeyboard(e) {
+      if (e.keyCode == 13 && vm.message.length) {
+        sendMessage();
       }
     }
 

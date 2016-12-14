@@ -160,8 +160,21 @@ body {
         right: 0;
         padding-right: 10px; }
   .chat-container .chat-right {
-    width: 350px;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 450px;
     background: white; }
+    .chat-container .chat-right .users-list {
+      position: absolute;
+      top: 50px;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 25px; }
+      .chat-container .chat-right .users-list .user {
+        margin-bottom: 10px; }
   .chat-container header {
     position: absolute;
     top: 0;
@@ -192,8 +205,11 @@ body {
       .chat-container .messages-container .message-container .message {
         background: white;
         padding: 10px;
-        border-radius: 20px 20px 20px 0px;
+        border-radius: 20px 20px 20px 20px;
         float: left; }
+      .chat-container .messages-container .message-container .message.self {
+        background: #1abc9c;
+        float: right; }
   .chat-container .send-container {
     position: absolute;
     bottom: 0;

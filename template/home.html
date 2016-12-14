@@ -23,15 +23,15 @@
           <div class="author">
 
           </div>
-          <div class="message">
-            <span class="strong">{{message.Name}}</span> {{message.Body}}
+          <div class="message" ng-class="{self: message.id == vm.me.Body}">
+            <span class="strong" ng-if="message.id != vm.me.Body">{{message.Name}}</span> {{message.Body}}
           </div>
           <div class="clearfix"></div>
         </div>
 
       </div>
       <div class="send-container">
-        <textarea name="name" rows="8" cols="80" ng-model="vm.message"></textarea>
+        <textarea name="name" rows="8" cols="80" ng-model="vm.message" ng-keyup="vm.sendMessageKeyboard($event)"></textarea>
         <div class="send-button-container">
           <button class="circular ui icon basic mini button" ng-click="vm.sendMessage()">
             <i class="icon send"></i>
@@ -42,6 +42,14 @@
       <header>
         Utilisateurs
       </header>
+      <div class="users-list">
+        <div class="user">
+          {{vm.me.Name}} <span style="font-size: 10px; color: lightgray;">(moi)</span>
+        </div>
+        <div class="user" ng-repeat="user in vm.users">
+          {{user.username}}
+        </div>
+      </div>
     </div>
 </div>
 

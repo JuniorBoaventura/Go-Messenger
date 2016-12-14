@@ -90,9 +90,23 @@ $footer-height: 100px;
   }
 
   .chat-right {
-    width: $right-width;
+    // width: $right-width;
+    position: absolute;
+    top: 0; bottom: 0; right: 0;
+    left: $left-width;
     background: white;
     // background: rgba(255, 255, 255, 0.80);
+
+    .users-list {
+      position: absolute;
+      top: $header-height;
+      left: 0; right: 0; bottom: 0;
+      padding: 25px;
+
+      .user {
+        margin-bottom: 10px;
+      }
+    }
   }
 
   header {
@@ -128,8 +142,13 @@ $footer-height: 100px;
       .message {
         background: white;
         padding: 10px;
-        border-radius: 20px 20px 20px 0px;
+        border-radius: 20px 20px 20px 20px;
         float: left;
+      }
+
+      .message.self {
+        background: #1abc9c;
+        float: right;
       }
     }
   }
