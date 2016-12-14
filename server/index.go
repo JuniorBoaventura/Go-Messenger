@@ -6,8 +6,10 @@ import (
   "net/http"
   "crypto/md5"
   "encoding/hex"
+  "sync"
 )
 
+var mu = &sync.Mutex{}
 var clients = make(map[string]Client)
 
 type Message struct {
@@ -31,39 +33,45 @@ type Users struct {
   Users []User
 }
 
-// // Send an object to all the clients connected except the current user
+// Send an object to all the clients connected except the current user
 func (this User) broadcast(message interface{})  {
+  mu.Lock()
   for _, client := range clients {
     if client.User.Id != this.Id {
       websocket.JSON.Send(client.Websocket, message)
     }
   }
+  mu.Unlock()
 }
 
 // Send an object to all the clients connected
 func (this Client) emit(message interface{})  {
+  mu.Lock()
   for _, client := range clients {
     websocket.JSON.Send(client.Websocket, message)
   }
+  mu.Unlock()
 }
 
 // Broadcast the deconnection of the user and remove it from clients
 func (this User) disconnect() {
   disconnected := Message {this.Name, this.Id, "disconnected"}
   this.broadcast(disconnected)
+  mu.Lock()
   delete(clients, this.Id)
+  mu.Unlock()
 }
 
 // Return the list of the users connected
 func (this Client) UsersConnected() []User {
   var connectedUsers []User
-
+  mu.Lock()
   for _, client := range clients {
     if client.User.Id != this.User.Id {
       connectedUsers = append(connectedUsers, client.User)
     }
   }
-
+  mu.Unlock()
   return connectedUsers
 }
 
@@ -110,7 +118,9 @@ func WebSocket(ws *websocket.Conn) {
       newUser := Message{username, clientId, "newUser"}
       user.broadcast(newUser)
 
+      mu.Lock()
       clients[clientId] = client
+      mu.Unlock()
     }
 
     if data.Type == "message" {
