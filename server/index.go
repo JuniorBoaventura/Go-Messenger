@@ -10,13 +10,6 @@ import (
 
 var clients = make(map[string]Client)
 
-
-type Socket struct {
-    Body interface{} 
-    Type string
-}
-
-
 type Message struct {
     Name string
     Body string
@@ -25,7 +18,7 @@ type Message struct {
 
 type User struct {
   Id string  `json:"id"`
-  Username string `json:"username"`
+  Name string `json:"username"`
 }
 
 type Client struct {
@@ -56,6 +49,18 @@ func handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
 }
 
+func (this Client) UsersConnected() []User {
+  var connectedUsers []User
+
+  for _, client := range clients {
+    if client.user.Id != this.user.Id {
+      connectedUsers = append(connectedUsers, client.user)
+    }
+  }
+
+  return connectedUsers
+}
+
 func Echo(ws *websocket.Conn) {
 
   ip := ws.Request().RemoteAddr
@@ -69,7 +74,8 @@ func Echo(ws *websocket.Conn) {
     var msg Message
 
     if err := websocket.JSON.Receive(ws, &msg); err != nil {
-      fmt.Println(err)
+      disconnected := Message {user.Name, user.Id, "disconnected"}
+      user.broadcast(disconnected)
       return
     }
 
@@ -82,13 +88,7 @@ func Echo(ws *websocket.Conn) {
       connection := Message{username, clientId, "connected"}
       newUser := Message{username, clientId, "newUser"}
 
-      var connectedUsers []User
-
-      for _, client := range clients {
-        connectedUsers = append(connectedUsers, client.user)
-      }
-
-      users := Users{"ConnectedUsers", connectedUsers}
+      users := Users{"ConnectedUsers", client.UsersConnected()}
 
       // User Receive is connection information
       websocket.JSON.Send(ws, connection)
