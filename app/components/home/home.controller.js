@@ -18,12 +18,14 @@
     vm.inUpdate = false;
 
     vm.messages = [];
+    vm.me = {};
+    vm.users    = [];
 
     // Socket event
     ws.on('connected', function(data) {
       console.log('connected', data);
       $scope.$apply(function() {
-        vm.username = data.Name;
+        vm.me = data;
         vm.isLogged = true;
       });
     });
@@ -43,13 +45,15 @@
     vm.setUsername = setUsername;
 
     function sendMessage(e) {
-      if (vm.username.length && vm.message.length) {
+      if (vm.me.Name.length && vm.message.length) {
         console.log('here');
         ws.sendRequest({
-          Name: vm.username,
+          Name: vm.me.Name,
           Body: vm.message,
           Type: 'message',
         });
+
+        vm.message = '';
       }
     }
 
