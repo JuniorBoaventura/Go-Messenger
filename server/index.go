@@ -6,10 +6,15 @@ import (
   "net/http"
   "crypto/md5"
   "encoding/hex"
-  "encoding/json"
 )
 
 var clients = make(map[string]Client)
+
+
+type Socket struct {
+    Body interface{} 
+    Type string
+}
 
 
 type Message struct {
@@ -33,11 +38,17 @@ type Users struct {
   Users []User
 }
 
-func (this Client) broadcast(clients map[string]Client, message interface{})  {
+func (this User) broadcast(message interface{})  {
   for _, client := range clients {
-    if client.user.Id != this.user.Id {
+    if client.user.Id != this.Id {
       websocket.JSON.Send(client.Websocket, message)
     }
+  }
+}
+
+func (this Client) emit(message interface{})  {
+  for _, client := range clients {
+    websocket.JSON.Send(client.Websocket, message)
   }
 }
 
@@ -50,6 +61,7 @@ func Echo(ws *websocket.Conn) {
   ip := ws.Request().RemoteAddr
   clientId := MD5Hash(ip)
   var client Client
+  var user User
   fmt.Println("Client connected:", clientId)
 
   for {
@@ -64,10 +76,8 @@ func Echo(ws *websocket.Conn) {
     if msg.Type == "connect" {
       username := msg.Body
 
-      user := User{clientId, username}
+      user = User{clientId, username}
       client = Client{ws, user}
-
-
 
       connection := Message{username, clientId, "connected"}
       newUser := Message{username, clientId, "newUser"}
@@ -79,18 +89,21 @@ func Echo(ws *websocket.Conn) {
       }
 
       users := Users{"ConnectedUsers", connectedUsers}
-      json, _ := json.Marshal(connectedUsers)
-      fmt.Println(string(json))
 
+      // User Receive is connection information
       websocket.JSON.Send(ws, connection)
+
+      // User receive the list of the connected users
       websocket.JSON.Send(ws, users)
 
-      client.broadcast(clients, newUser)
+      // Prevent all the other clients of it's connection
+      user.broadcast(newUser)
+
       clients[clientId] = client
     }
 
     if msg.Type == "message" {
-      client.broadcast(clients, msg)
+      client.emit(msg)
     }
 
   }
