@@ -45,6 +45,12 @@ func (this Client) emit(message interface{})  {
   }
 }
 
+func (this User) disconnect() {
+  disconnected := Message {this.Name, this.Id, "disconnected"}
+  this.broadcast(disconnected)
+  delete(clients, this.Id)
+}
+
 func handler(w http.ResponseWriter, r *http.Request) {
     fmt.Fprintf(w, "Hi there, I love %s!", r.URL.Path[1:])
 }
@@ -74,8 +80,7 @@ func Echo(ws *websocket.Conn) {
     var msg Message
 
     if err := websocket.JSON.Receive(ws, &msg); err != nil {
-      disconnected := Message {user.Name, user.Id, "disconnected"}
-      user.broadcast(disconnected)
+      user.disconnect()
       return
     }
 
